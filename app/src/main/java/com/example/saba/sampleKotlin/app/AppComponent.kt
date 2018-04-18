@@ -10,8 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Component(modules = [
     AppModule::class,
     ActivityBindingModule::class,
-    AndroidSupportInjectionModule::class
-])
+    AndroidSupportInjectionModule::class])
 interface AppComponent {
 
     @Component.Builder

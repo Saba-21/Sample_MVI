@@ -4,7 +4,7 @@ import com.example.saba.sampleKotlin.presentation.MainActivity
 import com.example.saba.sampleKotlin.presentation.MainActivityModule
 import com.example.saba.sampleKotlin.base.scope.PerActivity
 import com.example.saba.sampleKotlin.presentation.FragmentBindingModule
-import com.example.saba.sampleKotlin.presentation.NavigatorBinfingModule
+import com.example.saba.sampleKotlin.presentation.NavigatorBindingModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,8 +15,7 @@ abstract class ActivityBindingModule{
     @ContributesAndroidInjector(modules = [
         MainActivityModule::class,
         FragmentBindingModule::class,
-        NavigatorBinfingModule::class
-    ])
+        NavigatorBindingModule::class])
     abstract fun contributeMainActivityInjector(): MainActivity
 
 }

@@ -13,6 +13,7 @@ abstract class BaseActivity<P : BasePresenter<out BaseView>> : AppCompatActivity
 
     override fun onDestroy() {
         mPresenter.detach()
+
         super.onDestroy()
     }
 

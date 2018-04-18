@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-abstract class NavigatorBinfingModule {
+abstract class NavigatorBindingModule {
 
     @Binds
     @PerActivity
