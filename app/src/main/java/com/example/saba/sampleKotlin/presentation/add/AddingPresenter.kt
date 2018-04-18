@@ -3,9 +3,7 @@ package com.example.saba.sampleKotlin.presentation.add
 import android.util.Log
 import com.example.saba.sampleKotlin.base.BasePresenter
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
-import com.example.saba.sampleKotlin.domain.useCase.DropLocalReposUseCase
 import com.example.saba.sampleKotlin.domain.useCase.GetGlobalReposUseCase
-import com.example.saba.sampleKotlin.domain.useCase.GetLocalReposUseCase
 import com.example.saba.sampleKotlin.domain.useCase.SaveLocalRepoUseCase
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

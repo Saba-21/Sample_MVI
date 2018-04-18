@@ -11,10 +11,10 @@ abstract class NavigatorBindingModule {
 
     @Binds
     @PerActivity
-    abstract fun BindAddingNavigator(presenter: MainPresenter):AddingNavigator
+    abstract fun bindAddingNavigator(presenter: MainPresenter):AddingNavigator
 
     @Binds
     @PerActivity
-    abstract fun BindResultsNavigator(presenter: MainPresenter):ResultNavigator
+    abstract fun bindResultsNavigator(presenter: MainPresenter):ResultNavigator
 
 }

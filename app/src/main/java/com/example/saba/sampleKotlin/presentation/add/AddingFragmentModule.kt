@@ -1,9 +1,7 @@
 package com.example.saba.sampleKotlin.presentation.add
 
 import com.example.saba.sampleKotlin.base.scope.PerFragment
-import com.example.saba.sampleKotlin.domain.useCase.DropLocalReposUseCase
 import com.example.saba.sampleKotlin.domain.useCase.GetGlobalReposUseCase
-import com.example.saba.sampleKotlin.domain.useCase.GetLocalReposUseCase
 import com.example.saba.sampleKotlin.domain.useCase.SaveLocalRepoUseCase
 import dagger.Module
 import dagger.Provides

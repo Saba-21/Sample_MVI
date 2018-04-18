@@ -2,7 +2,6 @@ package com.example.saba.sampleKotlin.domain.database.daos
 
 import android.arch.persistence.room.*
 import com.example.saba.sampleKotlin.domain.model.dbModels.OwnerDbModel
-import com.example.saba.sampleKotlin.domain.model.dbModels.RepoDbModel
 
 @Dao
 interface OwnerDao {
