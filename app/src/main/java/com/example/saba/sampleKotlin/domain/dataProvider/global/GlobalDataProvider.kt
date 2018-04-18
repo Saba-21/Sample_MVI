@@ -1,6 +1,6 @@
 package com.example.saba.sampleKotlin.domain.dataProvider.global
 
-import com.example.saba.sampleKotlin.domain.model.RepoModel
+import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path

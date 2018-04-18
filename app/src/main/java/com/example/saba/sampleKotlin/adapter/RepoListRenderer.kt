@@ -2,7 +2,7 @@ package com.example.saba.sampleKotlin.adapter
 
 import android.widget.TextView
 import com.example.saba.sampleKotlin.R
-import com.example.saba.sampleKotlin.domain.model.RepoModel
+import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.zuluft.autoadapter.renderables.OrderableRenderer
 import com.zuluft.autoadapterannotations.Render
@@ -35,19 +35,23 @@ import com.zuluft.generated.RepoListRendererViewHolder
 class RepoListRenderer(val repoModel: RepoModel) : OrderableRenderer<RepoListRendererViewHolder>(){
 
     override fun apply(holder: RepoListRendererViewHolder){
-        holder.avatar.setImageURI(repoModel.owner.avatar)
+        holder.avatar.setImageURI(repoModel.owner.avatarUrl)
         holder.user.text = repoModel.owner.login
         holder.name.text = repoModel.name
         holder.language.text = repoModel.language
         holder.stars.text = repoModel.starCount.toString()
     }
 
-    private fun getRepo(oR: OrderableRenderer<*>): RepoModel = (oR as RepoListRenderer).repoModel
+    private fun getRepo(oR: OrderableRenderer<*>):
+            RepoModel = (oR as RepoListRenderer).repoModel
 
-    override fun compareTo(oR: OrderableRenderer<*>): Int = getRepo(oR).starCount.compareTo(repoModel.starCount)
+    override fun compareTo(oR: OrderableRenderer<*>):
+            Int = getRepo(oR).starCount.compareTo(repoModel.starCount)
 
-    override fun areContentsTheSame(oR: OrderableRenderer<*>): Boolean = repoModel.name == getRepo(oR).name
+    override fun areContentsTheSame(oR: OrderableRenderer<*>):
+            Boolean = repoModel.name == getRepo(oR).name
 
-    override fun areItemsTheSame(oR: OrderableRenderer<*>): Boolean = repoModel.id == getRepo(oR).id
+    override fun areItemsTheSame(oR: OrderableRenderer<*>):
+            Boolean = repoModel.id == getRepo(oR).id
 
 }

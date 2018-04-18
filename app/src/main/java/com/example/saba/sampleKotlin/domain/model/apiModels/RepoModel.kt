@@ -1,4 +1,4 @@
-package com.example.saba.sampleKotlin.domain.model
+package com.example.saba.sampleKotlin.domain.model.apiModels
 
 import com.google.gson.annotations.SerializedName
 

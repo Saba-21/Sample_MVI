@@ -1,4 +1,5 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorAccent"
-        android:hint="username"
+        android:hint="@string/tv_username_text"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@+id/butSearch"
         app:layout_constraintEnd_toStartOf="@+id/butSearch"
@@ -21,13 +22,13 @@
         android:id="@+id/butSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="search"
+        android:text="@string/but_search_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvUsername"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/reposListView"
+        android:id="@+id/rvGlobalRepos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/butDrawResult"
@@ -36,12 +37,11 @@
         app:layout_constraintTop_toBottomOf="@+id/tvUsername">
     </android.support.v7.widget.RecyclerView>
 
-
     <Button
         android:id="@+id/butDrawResult"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="go to result screen"
+        android:text="@string/but_nav_screen_result_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

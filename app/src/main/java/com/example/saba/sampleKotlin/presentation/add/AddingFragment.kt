@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.example.saba.sampleKotlin.R
 import com.example.saba.sampleKotlin.adapter.RepoListRenderer
 import com.example.saba.sampleKotlin.base.BaseFragment
-import com.example.saba.sampleKotlin.domain.model.RepoModel
+import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
 import dagger.android.support.AndroidSupportInjection
@@ -18,22 +18,22 @@ import kotlinx.android.synthetic.main.fragment_adding.view.*
 class AddingFragment : BaseFragment<AddingPresenter>(), AddingView {
 
     private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
-    
+
+    companion object { @JvmStatic fun newInstance(): AddingFragment = AddingFragment() }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_adding, container, false)
 
-        view.reposListView.layoutManager = LinearLayoutManager(context)
-        view.reposListView.adapter = listAdapter
+        view.rvGlobalRepos.layoutManager = LinearLayoutManager(context)
+        view.rvGlobalRepos.adapter = listAdapter
 
         mPresenter.attach(this)
+        mPresenter.subscribeUserAction(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
+
         view.butDrawResult.setOnClickListener { mPresenter.goToResultsScreen() }
-        view.butSearch.setOnClickListener { mPresenter.getStarredRepos(view.tvUsername.text.toString()) }
+        view.butSearch.setOnClickListener { mPresenter.getGlobalRepos(view.tvUsername.text.toString()) }
 
         return view
-    }
-
-    override fun updateList(repos: List<RepoModel>){
-        listAdapter.updateAll(repos.map{RepoListRenderer(it)})
     }
 
     override fun onAttach(context: Context){
@@ -41,5 +41,7 @@ class AddingFragment : BaseFragment<AddingPresenter>(), AddingView {
         super.onAttach(context)
     }
 
-    companion object { @JvmStatic fun newInstance():AddingFragment = AddingFragment() }
+    override fun updateList(repos: List<RepoModel>){
+        listAdapter.updateAll(repos.map{RepoListRenderer(it)})
+    }
 }

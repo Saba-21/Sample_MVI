@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Sample_kotlin</string>
     <string name="base_url">https://api.github.com/</string>
+    <string name="tv_username_text">username</string>
+    <string name="but_search_text">search</string>
+    <string name="but_nav_screen_result_text">go to result screen</string>
+    <string name="but_nav_screen_add_text">go to add screen</string>
 </resources>

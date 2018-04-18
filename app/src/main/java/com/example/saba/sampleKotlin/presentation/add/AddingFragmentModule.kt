@@ -1,8 +1,10 @@
 package com.example.saba.sampleKotlin.presentation.add
 
 import com.example.saba.sampleKotlin.base.scope.PerFragment
-import com.example.saba.sampleKotlin.domain.dataProvider.global.GlobalDataProvider
-import com.example.saba.sampleKotlin.domain.useCase.GetStarredReposUseCase
+import com.example.saba.sampleKotlin.domain.useCase.DropLocalReposUseCase
+import com.example.saba.sampleKotlin.domain.useCase.GetGlobalReposUseCase
+import com.example.saba.sampleKotlin.domain.useCase.GetLocalReposUseCase
+import com.example.saba.sampleKotlin.domain.useCase.SaveLocalRepoUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -12,7 +14,10 @@ class AddingFragmentModule{
     @Provides
     @PerFragment
     fun provideAddingPresenter(addingNavigator: AddingNavigator,
-                               getStarredReposUseCase: GetStarredReposUseCase):
-            AddingPresenter = AddingPresenter(addingNavigator,getStarredReposUseCase)
+                               getGlobalReposUseCase: GetGlobalReposUseCase,
+                               saveLocalRepoUseCase: SaveLocalRepoUseCase):
+            AddingPresenter = AddingPresenter(addingNavigator,
+                            getGlobalReposUseCase,
+                            saveLocalRepoUseCase)
 
 }
