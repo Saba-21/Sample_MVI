@@ -14,32 +14,33 @@ class ResultPresenter(private val resultNavigator: ResultNavigator,
                       private val dropLocalReposUseCase: DropLocalReposUseCase):
         BasePresenter<ResultView>(){
 
-    fun goToAddingScreen(){ resultNavigator.goToAddingScreen() }
-
-    fun getLocalRepos(){
-
-        mCompositeDisposable.add(getLocalReposUseCase
-                .createObservable(Unit)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({mView?.updateList(it)},
-                        { it.printStackTrace() }))
+    fun subscribeNavigationClick(userAction: Observable<Unit>){
+            mCompositeDisposable.add(userAction
+                    .subscribe{resultNavigator.goToAddingScreen()})
     }
 
     fun subscribeUserAction(userAction: Observable<RepoModel>){
-        mCompositeDisposable.add(userAction
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap { dropLocalRepo(it) }
-                .subscribe{ log(it) })
+            mCompositeDisposable.add(userAction
+                    .flatMap { dropLocalRepo(it) }
+                    .subscribe({ log(it) },
+                            { it.printStackTrace() }))
+    }
+
+    fun getLocalRepos(){
+            mCompositeDisposable.add(getLocalReposUseCase
+                    .createObservable(Unit)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({mView?.updateList(it)},
+                            { it.printStackTrace() }))
     }
 
     private fun dropLocalRepo(repo: RepoModel):
             Observable<RepoModel> = dropLocalReposUseCase
-            .createObservable(repo)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+                    .createObservable(repo)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
 
-    private fun log(repo: RepoModel){ Log.e("clicked:", repo.name) }
+    private fun log(repo: RepoModel){ Log.i("clicked:", repo.name) }
 
 }

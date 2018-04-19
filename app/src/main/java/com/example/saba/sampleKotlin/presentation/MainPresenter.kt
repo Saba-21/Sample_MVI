@@ -8,6 +8,6 @@ class MainPresenter: BasePresenter<MainView>(), AddingNavigator, ResultNavigator
 
     override fun goToAddingScreen(){mView?.drawAddingFragment()}
 
-    override fun goToResultsScreen(){mView?.drawResultFragment()}
+    override fun goToResultScreen(){mView?.drawResultFragment()}
 
 }

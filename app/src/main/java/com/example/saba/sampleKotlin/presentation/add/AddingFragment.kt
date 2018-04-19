@@ -10,6 +10,7 @@ import com.example.saba.sampleKotlin.R
 import com.example.saba.sampleKotlin.adapter.RepoListRenderer
 import com.example.saba.sampleKotlin.base.BaseFragment
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
+import com.jakewharton.rxbinding2.view.clicks
 import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
 import dagger.android.support.AndroidSupportInjection
@@ -28,10 +29,9 @@ class AddingFragment : BaseFragment<AddingPresenter>(), AddingView {
         view.rvGlobalRepos.adapter = listAdapter
 
         mPresenter.attach(this)
-        mPresenter.subscribeUserAction(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
-
-        view.butDrawResult.setOnClickListener { mPresenter.goToResultsScreen() }
-        view.butSearch.setOnClickListener { mPresenter.getGlobalRepos(view.tvUsername.text.toString()) }
+        mPresenter.subscribeItemClick(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
+        mPresenter.subscribeNavigationClick(view.butDrawResult.clicks())
+        mPresenter.subscribeSearchClick(view.butSearch.clicks().map { view.tvUsername.text.toString().trim() })
 
         return view
     }

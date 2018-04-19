@@ -18,7 +18,7 @@ class Converter {
 
     fun convertList(repos: List<RepoDbModel>, owners: List<OwnerDbModel>): List<RepoModel>{
         val repoList: MutableList<RepoModel> = arrayListOf()
-        repos.forEach { repoList.add(convertModel(it, owners[repos.indexOf(it)] )) }
+        repos.forEach { repoList.add(convertModel(it, owners[owners.indexOfFirst{ owner -> owner.id == it.id }])) }
         return repoList
     }
 }

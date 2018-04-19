@@ -10,6 +10,7 @@ import com.example.saba.sampleKotlin.R
 import com.example.saba.sampleKotlin.adapter.RepoListRenderer
 import com.example.saba.sampleKotlin.base.BaseFragment
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
+import com.jakewharton.rxbinding2.view.clicks
 import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
 import dagger.android.support.AndroidSupportInjection
@@ -28,15 +29,14 @@ class ResultFragment : BaseFragment<ResultPresenter>(), ResultView{
         view.rvLocalRepos.adapter = listAdapter
 
         mPresenter.attach(this)
-        mPresenter.subscribeUserAction(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
-
-        view.bvDrawAdding.setOnClickListener { mPresenter.goToAddingScreen() }
         mPresenter.getLocalRepos()
+        mPresenter.subscribeUserAction(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
+        mPresenter.subscribeNavigationClick(view.bvDrawAdding.clicks())
 
         return view
     }
 
-    override fun onAttach(context: Context) {
+    override fun onAttach(context: Context){
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

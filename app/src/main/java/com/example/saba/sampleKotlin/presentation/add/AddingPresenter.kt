@@ -14,32 +14,37 @@ class AddingPresenter(private val addingNavigator: AddingNavigator,
                       private val saveLocalRepoUseCase: SaveLocalRepoUseCase):
         BasePresenter<AddingView>(){
 
-    fun goToResultsScreen(){addingNavigator.goToResultsScreen()}
-
-    fun getGlobalRepos(userName: String){
-        if (!userName.trim().isEmpty())
-            mCompositeDisposable.add(getGlobalReposUseCase
-                    .createObservable(userName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ mView?.updateList(it) },
-                            {it.printStackTrace()}))
+    fun subscribeNavigationClick(userAction: Observable<Unit>){
+            mCompositeDisposable.add(userAction
+                    .subscribe{addingNavigator.goToResultScreen()})
     }
 
-    fun subscribeUserAction(userAction: Observable<RepoModel>){
-        mCompositeDisposable.add(userAction
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap { saveLocalRepo(it) }
-                .subscribe{ log(it) })
+    fun subscribeItemClick(userAction: Observable<RepoModel>){
+            mCompositeDisposable.add(userAction
+                    .flatMap { saveLocalRepo(it) }
+                    .subscribe({ log(it) },
+                            { it.printStackTrace() }))
+    }
+
+    fun subscribeSearchClick(userAction: Observable<String>){
+            mCompositeDisposable.add(userAction
+                    .flatMap { getGlobalRepos(it) }
+                    .subscribe({ mView?.updateList(it) },
+                            { it.printStackTrace() }))
     }
 
     private fun saveLocalRepo(repo: RepoModel):
             Observable<RepoModel> = saveLocalRepoUseCase
-            .createObservable(repo)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+                    .createObservable(repo)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
 
-    private fun log(repo: RepoModel){ Log.e("clicked:", repo.name) }
+    private fun getGlobalRepos(userName: String):
+            Observable<List<RepoModel>> = getGlobalReposUseCase
+                    .createObservable(userName)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+
+    private fun log(repo: RepoModel){ Log.i("clicked:", repo.name) }
 
 }
