@@ -1,4 +1,4 @@
-package com.example.saba.sampleKotlin.presentation.actions
+package com.example.saba.sampleKotlin.presentation.mainActions
 
 import com.example.saba.sampleKotlin.mvi.actions.ViewStateAction
 import com.example.saba.sampleKotlin.presentation.MAIN_VIEW_DRAW_ADDING_SCREEN_STATE
