@@ -33,12 +33,17 @@ class ResultFragment : BaseFragment<ResultViewState, ResultPresenter>(), ResultV
     }
 
     override fun reflectState(state: ResultViewState) {
+        when(state.state){
+            RESULT_VIEW_INITIAL_STATE -> {}
+            RESULT_VIEW_LOADING_STATE -> {}
+            RESULT_VIEW_ERROR_STATE -> {}
+        }
     }
 
     override fun onPresenterReady(presenter: ResultPresenter) {
         presenter.attach(this)
     }
 
-    override fun onAddingScreenNavigatorClickIntent(): Observable<Unit>  = bvDrawAdding.clicks()
+    override fun onAddingNavigatorClickIntent(): Observable<Unit> = butDrawAdding.clicks()
 
 }

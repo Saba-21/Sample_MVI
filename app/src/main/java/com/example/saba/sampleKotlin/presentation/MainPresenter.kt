@@ -26,5 +26,4 @@ class MainPresenter: BasePresenter<MainViewState, MainView>(),
         dispatchAction(DrawAddingScreenAction())
     }
 
-
 }

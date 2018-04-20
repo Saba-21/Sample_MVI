@@ -2,10 +2,13 @@ package com.example.saba.sampleKotlin.presentation.add
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.saba.sampleKotlin.R
+import com.example.saba.sampleKotlin.adapter.RepoListRenderer
+import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
 import com.jakewharton.rxbinding2.view.clicks
 import com.zuluft.autoadapter.SortedAutoAdapter
@@ -33,12 +36,40 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
     }
 
     override fun reflectState(state: AddingViewState) {
+        when(state.state){
+
+            ADDING_VIEW_INITIAL_STATE -> {
+                bar_loading.visibility = View.GONE
+                tv_error.visibility = View.GONE
+            }
+
+            ADDING_VIEW_LOADING_STATE -> {
+                listAdapter.removeAll()
+                bar_loading.visibility = View.VISIBLE
+            }
+
+            ADDING_VIEW_SUCCESS_STATE -> {
+                bar_loading.visibility = View.GONE
+                listAdapter.updateAll(state.result?.map { repoModel: RepoModel -> RepoListRenderer(repoModel) }!!)
+            }
+
+            ADDING_VIEW_ERROR_STATE -> {
+                bar_loading.visibility = View.GONE
+                tv_error.visibility = View.VISIBLE
+                tv_error.text = state.exception
+            }
+
+        }
     }
 
     override fun onPresenterReady(presenter: AddingPresenter) {
         presenter.attach(this)
     }
 
-    override fun onResultScreenNavigatorClickIntent(): Observable<Unit> = butDrawResult.clicks()
+    override fun onResultNavigatorClickIntent():
+            Observable<Unit> = butDrawResult.clicks()
+
+    override fun onSearchClickIntent():
+            Observable<String> = butSearch.clicks().map { tvUsername.text.toString().trim() }
 
 }

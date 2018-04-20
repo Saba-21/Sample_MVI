@@ -14,11 +14,28 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseActivity<ViewState: Any, P : BasePresenter<ViewState, out BaseView<ViewState>>>:
-        AppCompatActivity(), HasSupportFragmentInjector {
+
+abstract class BaseActivity<ViewState: Any, P : BasePresenter<ViewState, out BaseView<ViewState>>>: AppCompatActivity(), HasSupportFragmentInjector {
 
     private var presenter: P? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    protected abstract fun reflectState(state: ViewState)
+
+    protected abstract fun onPresenterReady(presenter: P)
+
+    protected abstract fun renderView(savedInstanceState: Bundle?)
+
+    fun subscribe(continuousViewStateObservable: Observable<ViewState>,
+                  viewStateObservable: Observable<ViewState>) {
+        compositeDisposable.add(viewStateObservable.subscribe(this::reflectState))
+        compositeDisposable.add(continuousViewStateObservable.subscribe(this::reflectState))
+    }
+
+    @Inject fun setPresenter(lazy: Lazy<P>) {
+        if (lastNonConfigurationInstance == null) presenter = lazy.get()
+        onPresenterReady(presenter!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +48,6 @@ abstract class BaseActivity<ViewState: Any, P : BasePresenter<ViewState, out Bas
         compositeDisposable.clear()
         super.onDestroy()
     }
-
-    @Inject
-    fun setPresenter(lazy: Lazy<P>) {
-        if (lastNonConfigurationInstance == null) presenter = lazy.get()
-        onPresenterReady(presenter!!)
-    }
-
-    fun subscribe(continuousViewStateObservable: Observable<ViewState>,
-                  viewStateObservable: Observable<ViewState>) {
-        compositeDisposable.add(viewStateObservable.subscribe(this::reflectState))
-        compositeDisposable.add(continuousViewStateObservable.subscribe(this::reflectState))
-    }
-
-    protected abstract fun reflectState(state: ViewState)
-
-    protected abstract fun onPresenterReady(presenter: P)
-
-    protected abstract fun renderView(savedInstanceState: Bundle?)
 
     @Inject lateinit var mDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 

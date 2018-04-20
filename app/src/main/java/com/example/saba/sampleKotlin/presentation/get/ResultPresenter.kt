@@ -11,14 +11,14 @@ class ResultPresenter(private val resultNavigator: ResultNavigator,
         BasePresenter<ResultViewState, ResultView>(){
 
     override fun getInitialViewState():
-            ResultViewState  = ResultViewState(Result_VIEW_INITIAL_STATE)
+            ResultViewState = ResultViewState(RESULT_VIEW_INITIAL_STATE)
 
     override fun onFirstAttach() {
     }
 
     override fun onAttach(isFirstAttach: Boolean) {
         registerPerViewDisposables(
-                getView().onAddingScreenNavigatorClickIntent()
+                getView().onAddingNavigatorClickIntent()
                         .map { GoToAddingScreenAction(resultNavigator) }
                         .subscribe(this::dispatchAction))
     }

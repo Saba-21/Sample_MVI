@@ -10,14 +10,14 @@
         android:id="@+id/rvLocalRepos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bvDrawAdding"
+        app:layout_constraintBottom_toTopOf="@+id/butDrawAdding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:id="@+id/bvDrawAdding"
+        android:id="@+id/butDrawAdding"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/but_nav_screen_add_text"

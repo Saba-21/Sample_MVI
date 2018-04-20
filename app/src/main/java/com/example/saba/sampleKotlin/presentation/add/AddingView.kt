@@ -5,6 +5,8 @@ import io.reactivex.Observable
 
 interface AddingView: BaseView<AddingViewState> {
 
-    fun onResultScreenNavigatorClickIntent(): Observable<Unit>
+    fun onResultNavigatorClickIntent(): Observable<Unit>
+
+    fun onSearchClickIntent(): Observable<String>
 
 }

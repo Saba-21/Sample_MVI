@@ -73,9 +73,9 @@ class AppModule{
     @Singleton
     fun provideDatabase(context: Context):
             RepoDatabase = Room
-            .databaseBuilder(context, RepoDatabase::class.java, "repoDatabase")
-            .fallbackToDestructiveMigration()
-            .build()
+                        .databaseBuilder(context, RepoDatabase::class.java, "repoDatabase")
+                        .fallbackToDestructiveMigration()
+                        .build()
 
     @Provides
     @Singleton
