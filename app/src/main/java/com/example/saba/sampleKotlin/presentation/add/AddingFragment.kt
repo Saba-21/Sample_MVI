@@ -1,22 +1,20 @@
 package com.example.saba.sampleKotlin.presentation.add
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.saba.sampleKotlin.R
-import com.example.saba.sampleKotlin.adapter.RepoListRenderer
-import com.example.saba.sampleKotlin.base.BaseFragment
-import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
+import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
 import com.jakewharton.rxbinding2.view.clicks
 import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
-import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.fragment_adding.*
 import kotlinx.android.synthetic.main.fragment_adding.view.*
 
-class AddingFragment : BaseFragment<AddingPresenter>(), AddingView {
+class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingView {
 
     private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
 
@@ -28,20 +26,19 @@ class AddingFragment : BaseFragment<AddingPresenter>(), AddingView {
         view.rvGlobalRepos.layoutManager = LinearLayoutManager(context)
         view.rvGlobalRepos.adapter = listAdapter
 
-        mPresenter.attach(this)
-        mPresenter.subscribeItemClick(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
-        mPresenter.subscribeNavigationClick(view.butDrawResult.clicks())
-        mPresenter.subscribeSearchClick(view.butSearch.clicks().map { view.tvUsername.text.toString().trim() })
-
         return view
     }
 
-    override fun onAttach(context: Context){
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
+    override fun renderView(view: View?, savedInstanceState: Bundle?) {
     }
 
-    override fun updateList(repos: List<RepoModel>){
-        listAdapter.updateAll(repos.map{RepoListRenderer(it)})
+    override fun reflectState(state: AddingViewState) {
     }
+
+    override fun onPresenterReady(presenter: AddingPresenter) {
+        presenter.attach(this)
+    }
+
+    override fun onResultScreenNavigatorClickIntent(): Observable<Unit> = butDrawResult.clicks()
+
 }

@@ -1,6 +1,6 @@
 package com.example.saba.sampleKotlin.presentation
 
-import com.example.saba.sampleKotlin.base.scope.PerActivity
+import com.example.saba.sampleKotlin.mvi.scope.PerActivity
 import dagger.Module
 import dagger.Provides
 
@@ -9,6 +9,6 @@ class MainActivityModule{
 
     @Provides
     @PerActivity
-    fun provideMainPresenter():MainPresenter = MainPresenter()
+    fun provideMainPresenter(): MainPresenter = MainPresenter()
 
 }

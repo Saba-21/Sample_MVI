@@ -1,10 +1,10 @@
 package com.example.saba.sampleKotlin.presentation.add
 
-import com.example.saba.sampleKotlin.base.BaseView
-import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
+import com.example.saba.sampleKotlin.mvi.view.BaseView
+import io.reactivex.Observable
 
-interface AddingView: BaseView{
+interface AddingView: BaseView<AddingViewState> {
 
-    fun updateList(repos: List<RepoModel>)
+    fun onResultScreenNavigatorClickIntent(): Observable<Unit>
 
 }

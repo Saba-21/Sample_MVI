@@ -1,6 +1,6 @@
-package com.example.saba.sampleKotlin.presentation
+package com.example.saba.sampleKotlin.presentation.bindingModules
 
-import com.example.saba.sampleKotlin.base.scope.PerFragment
+import com.example.saba.sampleKotlin.mvi.scope.PerFragment
 import com.example.saba.sampleKotlin.presentation.add.AddingFragment
 import com.example.saba.sampleKotlin.presentation.add.AddingFragmentModule
 import com.example.saba.sampleKotlin.presentation.get.ResultFragment
@@ -13,10 +13,10 @@ abstract class FragmentBindingModule {
 
     @PerFragment
     @ContributesAndroidInjector(modules = [ResultFragmentModule::class])
-    abstract fun provideResultFragmentFactory():ResultFragment
+    abstract fun provideResultFragmentFactory(): ResultFragment
 
     @PerFragment
     @ContributesAndroidInjector(modules = [AddingFragmentModule::class])
-    abstract fun provideAddingFragmentFactory():AddingFragment
+    abstract fun provideAddingFragmentFactory(): AddingFragment
 
 }

@@ -1,22 +1,20 @@
 package com.example.saba.sampleKotlin.presentation.get
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.saba.sampleKotlin.R
-import com.example.saba.sampleKotlin.adapter.RepoListRenderer
-import com.example.saba.sampleKotlin.base.BaseFragment
-import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
+import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
 import com.jakewharton.rxbinding2.view.clicks
 import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
-import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.android.synthetic.main.fragment_result.view.*
 
-class ResultFragment : BaseFragment<ResultPresenter>(), ResultView{
+class ResultFragment : BaseFragment<ResultViewState, ResultPresenter>(), ResultView {
 
     private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
 
@@ -28,20 +26,19 @@ class ResultFragment : BaseFragment<ResultPresenter>(), ResultView{
         view.rvLocalRepos.layoutManager = LinearLayoutManager(context)
         view.rvLocalRepos.adapter = listAdapter
 
-        mPresenter.attach(this)
-        mPresenter.getLocalRepos()
-        mPresenter.subscribeUserAction(listAdapter.clicks(RepoListRenderer::class.java ).map{ it.renderer }.map{ it.repoModel })
-        mPresenter.subscribeNavigationClick(view.bvDrawAdding.clicks())
-
         return view
     }
 
-    override fun onAttach(context: Context){
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
+    override fun renderView(view: View?, savedInstanceState: Bundle?) {
     }
 
-    override fun updateList(repos: List<RepoModel>){
-        listAdapter.updateAll(repos.map{RepoListRenderer(it)})
+    override fun reflectState(state: ResultViewState) {
     }
+
+    override fun onPresenterReady(presenter: ResultPresenter) {
+        presenter.attach(this)
+    }
+
+    override fun onAddingScreenNavigatorClickIntent(): Observable<Unit>  = bvDrawAdding.clicks()
+
 }

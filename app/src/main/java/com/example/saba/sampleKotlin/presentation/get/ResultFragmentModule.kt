@@ -1,6 +1,6 @@
 package com.example.saba.sampleKotlin.presentation.get
 
-import com.example.saba.sampleKotlin.base.scope.PerFragment
+import com.example.saba.sampleKotlin.mvi.scope.PerFragment
 import com.example.saba.sampleKotlin.domain.useCase.DropLocalReposUseCase
 import com.example.saba.sampleKotlin.domain.useCase.GetLocalReposUseCase
 import dagger.Module
@@ -15,7 +15,7 @@ class ResultFragmentModule{
                                getLocalReposUseCase: GetLocalReposUseCase,
                                dropLocalReposUseCase: DropLocalReposUseCase):
             ResultPresenter = ResultPresenter(resultNavigator,
-                            getLocalReposUseCase,
-                            dropLocalReposUseCase)
+            getLocalReposUseCase,
+            dropLocalReposUseCase)
 
 }
