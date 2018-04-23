@@ -2,7 +2,6 @@ package com.example.saba.sampleKotlin.presentation.add
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,44 +31,49 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
         return view
     }
 
-    override fun renderView(view: View?, savedInstanceState: Bundle?) {
-    }
-
     override fun reflectState(state: AddingViewState) {
         when(state.state){
-
-            ADDING_VIEW_INITIAL_STATE -> {
-                bar_loading.visibility = View.GONE
-                tv_error.visibility = View.GONE
-            }
-
-            ADDING_VIEW_LOADING_STATE -> {
-                listAdapter.removeAll()
-                bar_loading.visibility = View.VISIBLE
-            }
-
-            ADDING_VIEW_SUCCESS_STATE -> {
-                bar_loading.visibility = View.GONE
-                listAdapter.updateAll(state.result?.map { repoModel: RepoModel -> RepoListRenderer(repoModel) }!!)
-            }
-
-            ADDING_VIEW_ERROR_STATE -> {
-                bar_loading.visibility = View.GONE
-                tv_error.visibility = View.VISIBLE
-                tv_error.text = state.exception
-            }
-
+            ADDING_VIEW_INITIAL_STATE -> initialStateActions()
+            ADDING_VIEW_LOADING_STATE -> loadingStateActions()
+            ADDING_VIEW_SUCCESS_STATE -> successStateActions(state)
+            ADDING_VIEW_ERROR_STATE -> errorStateActions(state)
         }
     }
 
-    override fun onPresenterReady(presenter: AddingPresenter) {
-        presenter.attach(this)
+    private fun initialStateActions(){
+        bar_adding_loading.visibility = View.GONE
+        tv_adding_error.visibility = View.GONE
     }
+
+    private fun loadingStateActions(){
+        listAdapter.removeAll()
+        bar_adding_loading.visibility = View.VISIBLE
+    }
+
+    private fun successStateActions(viewState: AddingViewState){
+        bar_adding_loading.visibility = View.GONE
+        listAdapter.updateAll(viewState.response?.map{ RepoListRenderer(it) }!!)
+    }
+
+    private fun errorStateActions(viewState: AddingViewState){
+        bar_adding_loading.visibility = View.GONE
+        tv_adding_error.visibility = View.VISIBLE
+        tv_adding_error.text = viewState.exception
+    }
+
+    override fun renderView(view: View?, savedInstanceState: Bundle?) { }
+
+    override fun onPresenterReady(presenter: AddingPresenter) { presenter.attach(this) }
 
     override fun onResultNavigatorClickIntent():
             Observable<Unit> = butDrawResult.clicks()
 
     override fun onSearchClickIntent():
-            Observable<String> = butSearch.clicks().map { tvUsername.text.toString().trim() }
+            Observable<String> = butSearch.clicks().map{tvUsername.text.toString().trim()}
 
+    override fun onAddClickIntent():
+            Observable<RepoModel> = listAdapter
+                    .clicks(RepoListRenderer::class.java)
+                    .map{itemInfo->itemInfo.renderer}
+                    .map{renderer->renderer.repoModel}
 }

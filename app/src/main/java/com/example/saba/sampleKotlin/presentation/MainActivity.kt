@@ -10,12 +10,9 @@ class MainActivity : BaseActivity<MainViewState, MainPresenter>(), MainView {
 
     override fun reflectState(state: MainViewState) {
         when(state.state){
-            MAIN_VIEW_DRAW_ADDING_SCREEN_STATE -> {
-                onAddingScreenNavigationState()
-            }
-            MAIN_VIEW_DRAW_RESULT_SCREEN_STATE -> {
-                onResultScreenNavigationState()
-            }
+            MAIN_VIEW_DRAW_ADDING_SCREEN_STATE ->  onAddingScreenNavigationState()
+
+            MAIN_VIEW_DRAW_RESULT_SCREEN_STATE -> onResultScreenNavigationState()
         }
     }
 
@@ -23,9 +20,7 @@ class MainActivity : BaseActivity<MainViewState, MainPresenter>(), MainView {
         presenter.attach(this)
     }
 
-    override fun renderView(savedInstanceState: Bundle?) {
-
-    }
+    override fun renderView(savedInstanceState: Bundle?) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

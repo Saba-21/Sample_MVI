@@ -7,7 +7,7 @@
     tools:context="com.example.saba.sampleKotlin.presentation.add.AddingFragment">
 
     <ProgressBar
-        android:id="@+id/bar_loading"
+        android:id="@+id/bar_adding_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@android:style/Widget.ProgressBar.Small.Inverse"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_error"
+        android:id="@+id/tv_adding_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

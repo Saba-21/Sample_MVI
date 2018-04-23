@@ -11,8 +11,10 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseFragment<ViewState: Any, P:
-                BasePresenter<ViewState, out BaseView<ViewState>>> : Fragment(){
+
+abstract class BaseFragment<ViewState: Any,
+            P: BasePresenter<ViewState, out BaseView<ViewState>>>:
+            Fragment(){
 
     private var presenter: P? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()

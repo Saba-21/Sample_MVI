@@ -15,7 +15,9 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 
-abstract class BaseActivity<ViewState: Any, P : BasePresenter<ViewState, out BaseView<ViewState>>>: AppCompatActivity(), HasSupportFragmentInjector {
+abstract class BaseActivity<ViewState: Any,
+            P : BasePresenter<ViewState, out BaseView<ViewState>>>:
+            AppCompatActivity(), HasSupportFragmentInjector {
 
     private var presenter: P? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
