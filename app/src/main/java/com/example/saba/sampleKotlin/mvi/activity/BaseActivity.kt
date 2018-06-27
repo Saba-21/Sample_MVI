@@ -3,6 +3,7 @@ package com.example.saba.sampleKotlin.mvi.activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 import com.example.saba.sampleKotlin.mvi.presenter.BasePresenter
 import com.example.saba.sampleKotlin.mvi.view.BaseView
 import dagger.Lazy
@@ -41,6 +42,10 @@ abstract class BaseActivity<ViewState: Any,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val layoutResourceId = javaClass.getAnnotation(LayoutResourceId::class.java)
+        if (layoutResourceId != null) {
+            setContentView(layoutResourceId.value)
+        }
         renderView(savedInstanceState)
         AndroidInjection.inject(this)
     }

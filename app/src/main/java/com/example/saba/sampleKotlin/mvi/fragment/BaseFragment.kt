@@ -2,7 +2,10 @@ package com.example.saba.sampleKotlin.mvi.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 import com.example.saba.sampleKotlin.mvi.presenter.BasePresenter
 import com.example.saba.sampleKotlin.mvi.view.BaseView
 import dagger.Lazy
@@ -12,9 +15,9 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 
-abstract class BaseFragment<ViewState: Any,
-            P: BasePresenter<ViewState, out BaseView<ViewState>>>:
-            Fragment(){
+abstract class BaseFragment<ViewState : Any,
+        P : BasePresenter<ViewState, out BaseView<ViewState>>> :
+        Fragment() {
 
     private var presenter: P? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -31,7 +34,8 @@ abstract class BaseFragment<ViewState: Any,
         compositeDisposable.add(continuousViewStateObservable.subscribe(this::reflectState))
     }
 
-    @Inject fun setPresenter(lazy: Lazy<P>) {
+    @Inject
+    fun setPresenter(lazy: Lazy<P>) {
         if (presenter == null) presenter = lazy.get()
         onPresenterReady(presenter!!)
     }
@@ -45,6 +49,23 @@ abstract class BaseFragment<ViewState: Any,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+    }
+
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return createView(inflater, container)
+    }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected fun createView(inflater: LayoutInflater,
+                             container: ViewGroup?): View? {
+        var view: View? = null
+        val layoutResourceId = javaClass.getAnnotation(LayoutResourceId::class.java)
+        if (layoutResourceId != null) {
+            view = inflater.inflate(layoutResourceId.value, container, false)
+        }
+        return view
     }
 
     override fun onDestroyView() {
