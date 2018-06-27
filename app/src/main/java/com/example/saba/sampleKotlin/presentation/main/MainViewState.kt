@@ -1,4 +1,4 @@
-package com.example.saba.sampleKotlin.presentation
+package com.example.saba.sampleKotlin.presentation.main
 
 
 const val MAIN_VIEW_DRAW_ADDING_SCREEN_STATE: Int = 1

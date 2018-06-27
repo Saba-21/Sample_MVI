@@ -1,7 +1,7 @@
-package com.example.saba.sampleKotlin.presentation.mainBindingModules
+package com.example.saba.sampleKotlin.presentation.main.modules
 
 import com.example.saba.sampleKotlin.mvi.scope.PerActivity
-import com.example.saba.sampleKotlin.presentation.MainPresenter
+import com.example.saba.sampleKotlin.presentation.main.MainPresenter
 import com.example.saba.sampleKotlin.presentation.add.AddingNavigator
 import com.example.saba.sampleKotlin.presentation.get.ResultNavigator
 import dagger.Binds

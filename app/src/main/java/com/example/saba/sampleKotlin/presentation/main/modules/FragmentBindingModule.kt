@@ -1,4 +1,4 @@
-package com.example.saba.sampleKotlin.presentation.mainBindingModules
+package com.example.saba.sampleKotlin.presentation.main.modules
 
 import com.example.saba.sampleKotlin.mvi.scope.PerFragment
 import com.example.saba.sampleKotlin.presentation.add.AddingFragment

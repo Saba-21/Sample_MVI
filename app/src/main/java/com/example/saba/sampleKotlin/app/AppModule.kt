@@ -32,8 +32,8 @@ class AppModule{
     @Provides
     @Singleton
     @Named("base_url")
-    fun provideBaseUrl(context: Context):
-            String = context.getString(R.string.base_url)
+    fun provideBaseUrl():
+            String = BASE_URL
 
     @Provides
     @Singleton
@@ -73,7 +73,7 @@ class AppModule{
     @Singleton
     fun provideDatabase(context: Context):
             RepoDatabase = Room
-                        .databaseBuilder(context, RepoDatabase::class.java, "repoDatabase")
+                        .databaseBuilder(context, RepoDatabase::class.java, DB_NAME)
                         .fallbackToDestructiveMigration()
                         .build()
 

@@ -1,4 +1,4 @@
-package com.example.saba.sampleKotlin.presentation
+package com.example.saba.sampleKotlin.presentation.main
 
 import android.os.Bundle
 import com.example.saba.sampleKotlin.R.id.frame_main

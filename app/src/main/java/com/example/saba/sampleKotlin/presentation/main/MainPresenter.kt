@@ -1,8 +1,8 @@
-package com.example.saba.sampleKotlin.presentation
+package com.example.saba.sampleKotlin.presentation.main
 
 import com.example.saba.sampleKotlin.mvi.presenter.BasePresenter
-import com.example.saba.sampleKotlin.presentation.mainActions.DrawAddingScreenAction
-import com.example.saba.sampleKotlin.presentation.mainActions.DrawResultScreenAction
+import com.example.saba.sampleKotlin.presentation.main.actions.DrawAddingScreenAction
+import com.example.saba.sampleKotlin.presentation.main.actions.DrawResultScreenAction
 import com.example.saba.sampleKotlin.presentation.add.AddingNavigator
 import com.example.saba.sampleKotlin.presentation.get.ResultNavigator
 
