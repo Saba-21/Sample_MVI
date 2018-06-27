@@ -14,25 +14,22 @@ import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_adding.*
-import kotlinx.android.synthetic.main.fragment_adding.view.*
 
 class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingView {
 
     private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
 
-    companion object { @JvmStatic fun newInstance(): AddingFragment = AddingFragment() }
+    companion object {
+        @JvmStatic
+        fun newInstance(): AddingFragment = AddingFragment()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_adding, container, false)
-
-        view.rvGlobalRepos.layoutManager = LinearLayoutManager(context)
-        view.rvGlobalRepos.adapter = listAdapter
-
-        return view
+        return inflater.inflate(R.layout.fragment_adding, container, false)
     }
 
     override fun reflectState(state: AddingViewState) {
-        when(state.state){
+        when (state.state) {
             ADDING_VIEW_INITIAL_STATE -> initialStateActions()
             ADDING_VIEW_LOADING_STATE -> loadingStateActions()
             ADDING_VIEW_SUCCESS_STATE -> successStateActions(state)
@@ -40,40 +37,52 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
         }
     }
 
-    private fun initialStateActions(){
-        bar_adding_loading.visibility = View.GONE
-        tv_adding_error.visibility = View.GONE
+    private fun initialStateActions() {
+        rvGlobalRepos.layoutManager = LinearLayoutManager(context)
+        rvGlobalRepos.adapter = listAdapter
     }
 
-    private fun loadingStateActions(){
+    private fun loadingStateActions() {
         listAdapter.removeAll()
-        bar_adding_loading.visibility = View.VISIBLE
+        startLoadingAnimation()
     }
 
-    private fun successStateActions(viewState: AddingViewState){
-        bar_adding_loading.visibility = View.GONE
-        listAdapter.updateAll(viewState.response?.map{ RepoListRenderer(it) }!!)
+    private fun successStateActions(viewState: AddingViewState) {
+        listAdapter.updateAll(viewState.response?.map { RepoListRenderer(it) }!!)
+        stopLoadingAnimation()
     }
 
-    private fun errorStateActions(viewState: AddingViewState){
-        bar_adding_loading.visibility = View.GONE
+    private fun errorStateActions(viewState: AddingViewState) {
         tv_adding_error.visibility = View.VISIBLE
         tv_adding_error.text = viewState.exception
+        stopLoadingAnimation()
     }
 
-    override fun renderView(view: View?, savedInstanceState: Bundle?) { }
+    private fun startLoadingAnimation() {
+        animLoading.playAnimation()
+        animLoading.visibility = View.VISIBLE
+    }
 
-    override fun onPresenterReady(presenter: AddingPresenter) { presenter.attach(this) }
+    private fun stopLoadingAnimation() {
+        animLoading.cancelAnimation()
+        animLoading.visibility = View.GONE
+    }
+
+    override fun renderView(view: View?, savedInstanceState: Bundle?) {}
+
+    override fun onPresenterReady(presenter: AddingPresenter) {
+        presenter.attach(this)
+    }
 
     override fun onResultNavigatorClickIntent():
             Observable<Unit> = butDrawResult.clicks()
 
     override fun onSearchClickIntent():
-            Observable<String> = butSearch.clicks().map{tvUsername.text.toString().trim()}
+            Observable<String> = butSearch.clicks().map { tvUsername.text.toString().trim() }
 
     override fun onAddClickIntent():
             Observable<RepoModel> = listAdapter
-                    .clicks(RepoListRenderer::class.java)
-                    .map{itemInfo->itemInfo.renderer}
-                    .map{renderer->renderer.repoModel}
+            .clicks(RepoListRenderer::class.java)
+            .map { itemInfo -> itemInfo.renderer }
+            .map { renderer -> renderer.repoModel }
 }

@@ -14,25 +14,22 @@ import com.zuluft.autoadapter.SortedAutoAdapter
 import com.zuluft.generated.AutoAdapterFactory
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_result.*
-import kotlinx.android.synthetic.main.fragment_result.view.*
 
 class ResultFragment : BaseFragment<ResultViewState, ResultPresenter>(), ResultView {
 
     private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
 
-    companion object { @JvmStatic fun newInstance(): ResultFragment = ResultFragment() }
+    companion object {
+        @JvmStatic
+        fun newInstance(): ResultFragment = ResultFragment()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_result, container, false)
-
-        view.rvLocalRepos.layoutManager = LinearLayoutManager(context)
-        view.rvLocalRepos.adapter = listAdapter
-
-        return view
+        return inflater.inflate(R.layout.fragment_result, container, false)
     }
 
     override fun reflectState(state: ResultViewState) {
-        when(state.state){
+        when (state.state) {
             RESULT_VIEW_INITIAL_STATE -> initialStateActions()
             RESULT_VIEW_LOADING_STATE -> loadingStateActions()
             RESULT_VIEW_SUCCESS_STATE -> successStateActions(state)
@@ -40,40 +37,52 @@ class ResultFragment : BaseFragment<ResultViewState, ResultPresenter>(), ResultV
         }
     }
 
-    private fun initialStateActions(){
-        bar_result_loading.visibility = View.GONE
-        tv_result_error.visibility = View.GONE
+    private fun initialStateActions() {
+        rvLocalRepos.layoutManager = LinearLayoutManager(context)
+        rvLocalRepos.adapter = listAdapter
     }
 
-    private fun loadingStateActions(){
+    private fun loadingStateActions() {
         listAdapter.removeAll()
-        bar_result_loading.visibility = View.VISIBLE
+        startLoadingAnimation()
     }
 
-    private fun successStateActions(viewState: ResultViewState){
-        bar_result_loading.visibility = View.GONE
-        listAdapter.updateAll(viewState.response?.map{ RepoListRenderer(it) }!!)
+    private fun successStateActions(viewState: ResultViewState) {
+        listAdapter.updateAll(viewState.response?.map { RepoListRenderer(it) }!!)
+        stopLoadingAnimation()
     }
 
-    private fun errorStateActions(viewState: ResultViewState){
-        bar_result_loading.visibility = View.GONE
+    private fun errorStateActions(viewState: ResultViewState) {
         tv_result_error.visibility = View.VISIBLE
         tv_result_error.text = viewState.exception
+        stopLoadingAnimation()
     }
 
-    override fun renderView(view: View?, savedInstanceState: Bundle?) { }
+    private fun startLoadingAnimation() {
+        animLoading.playAnimation()
+        animLoading.visibility = View.VISIBLE
+    }
 
-    override fun onPresenterReady(presenter: ResultPresenter) { presenter.attach(this) }
+    private fun stopLoadingAnimation() {
+        animLoading.cancelAnimation()
+        animLoading.visibility = View.GONE
+    }
+
+    override fun renderView(view: View?, savedInstanceState: Bundle?) {}
+
+    override fun onPresenterReady(presenter: ResultPresenter) {
+        presenter.attach(this)
+    }
 
     override fun onAddingNavigatorClickIntent():
             Observable<Unit> = butDrawAdding.clicks()
 
     override fun onInitialIntent():
-            Observable<Unit>  = Observable.just(Unit)
+            Observable<Unit> = Observable.just(Unit)
 
     override fun onDropClickIntent():
             Observable<RepoModel> = listAdapter
-                    .clicks(RepoListRenderer::class.java)
-                    .map{itemInfo->itemInfo.renderer}
-                    .map{renderer->renderer.repoModel}
+            .clicks(RepoListRenderer::class.java)
+            .map { itemInfo -> itemInfo.renderer }
+            .map { renderer -> renderer.repoModel }
 }
