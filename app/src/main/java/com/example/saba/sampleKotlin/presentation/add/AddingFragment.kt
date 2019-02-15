@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.example.saba.sampleKotlin.R.layout.fragment_adding
-import com.example.saba.sampleKotlin.adapter.RepoListRenderer
+import com.example.saba.sampleKotlin.adapter.RepoRenderer
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
 import com.jakewharton.rxbinding2.view.clicks
-import com.zuluft.autoadapter.SortedAutoAdapter
-import com.zuluft.generated.AutoAdapterFactory
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_adding.*
 
 @LayoutResourceId(fragment_adding)
 class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingView {
 
-    private val listAdapter: SortedAutoAdapter = AutoAdapterFactory.createSortedAutoAdapter()
+    private val listAdapter = RepoRenderer()
+    private val listItemClickListener = PublishSubject.create<RepoModel>()
 
     companion object {
         @JvmStatic
@@ -36,15 +36,17 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
     private fun initialStateActions() {
         rvGlobalRepos.layoutManager = LinearLayoutManager(context)
         rvGlobalRepos.adapter = listAdapter
+        listAdapter.setClickListener {
+            listItemClickListener.onNext(it)
+        }
     }
 
     private fun loadingStateActions() {
-        listAdapter.removeAll()
         startLoadingAnimation()
     }
 
     private fun successStateActions(viewState: AddingViewState) {
-        listAdapter.updateAll(viewState.response?.map { RepoListRenderer(it) }!!)
+        listAdapter.updateData(viewState.response!!)
         stopLoadingAnimation()
     }
 
@@ -77,8 +79,5 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
             Observable<String> = butSearch.clicks().map { tvUsername.text.toString().trim() }
 
     override fun onAddClickIntent():
-            Observable<RepoModel> = listAdapter
-            .clicks(RepoListRenderer::class.java)
-            .map { itemInfo -> itemInfo.renderer }
-            .map { renderer -> renderer.repoModel }
+            PublishSubject<RepoModel> = listItemClickListener
 }

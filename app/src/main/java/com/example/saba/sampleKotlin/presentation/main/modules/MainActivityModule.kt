@@ -1,6 +1,7 @@
-package com.example.saba.sampleKotlin.presentation.main
+package com.example.saba.sampleKotlin.presentation.main.modules
 
 import com.example.saba.sampleKotlin.mvi.scope.PerActivity
+import com.example.saba.sampleKotlin.presentation.main.MainPresenter
 import dagger.Module
 import dagger.Provides
 
