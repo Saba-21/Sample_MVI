@@ -10,7 +10,6 @@ import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 abstract class BaseAdapter<D, T : BaseViewHolder<D>> : RecyclerView.Adapter<T>() {
 
     private var dataList = emptyList<D>()
-
     private var itemClickListener: ((D) -> Unit) = {}
 
     fun setClickListener(listener: (D) -> Unit) {
@@ -19,7 +18,7 @@ abstract class BaseAdapter<D, T : BaseViewHolder<D>> : RecyclerView.Adapter<T>()
 
     fun updateData(dataList: List<D>) {
         val diffUtilCallback = BaseDiffUtilCallback(this.dataList, dataList)
-        val diffUtilResult = DiffUtil.calculateDiff(diffUtilCallback)
+        val diffUtilResult = DiffUtil.calculateDiff(diffUtilCallback,true)
         this.dataList = dataList
         diffUtilResult.dispatchUpdatesTo(this)
     }
@@ -33,7 +32,7 @@ abstract class BaseAdapter<D, T : BaseViewHolder<D>> : RecyclerView.Adapter<T>()
     abstract fun onViewInflated(view: View): T
 
     override fun onBindViewHolder(viewHolder: T, position: Int) {
-        viewHolder.render(dataList[position], itemClickListener)
+        viewHolder.bind(dataList[position], itemClickListener)
     }
 
     override fun getItemCount(): Int = dataList.size

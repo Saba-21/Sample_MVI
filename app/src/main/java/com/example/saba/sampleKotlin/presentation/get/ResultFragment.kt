@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.example.saba.sampleKotlin.R.layout.fragment_result
-import com.example.saba.sampleKotlin.adapter.RepoRenderer
-import com.example.saba.sampleKotlin.adapter.base.BaseAdapter
+import com.example.saba.sampleKotlin.adapter.RepoAdapter
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
 import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_result.*
 @LayoutResourceId(fragment_result)
 class ResultFragment : BaseFragment<ResultViewState, ResultPresenter>(), ResultView {
 
-    private val listAdapter = RepoRenderer()
+    private val listAdapter = RepoAdapter()
     private val listItemClickListener = PublishSubject.create<RepoModel>()
 
     companion object {

@@ -9,13 +9,13 @@ import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
 import kotlinx.android.synthetic.main.repo_item.view.*
 
 @LayoutResourceId(R.layout.repo_item)
-class RepoRenderer : BaseAdapter<RepoModel, RepoRenderer.RepoViewHolder>() {
+class RepoAdapter : BaseAdapter<RepoModel, RepoAdapter.RepoViewHolder>() {
 
     override fun onViewInflated(view: View): RepoViewHolder = RepoViewHolder(view)
 
     inner class RepoViewHolder(view: View) : BaseViewHolder<RepoModel>(view) {
 
-        override fun render(item: RepoModel, vararg listeners: (RepoModel) -> Unit) {
+        override fun bind(item: RepoModel, vararg listeners: (RepoModel) -> Unit) {
             itemView.tvListUser.text = item.owner.login
             itemView.tvListName.text = item.name
             itemView.tvListLanguage.text = item.language
