@@ -2,7 +2,7 @@ package com.example.saba.sampleKotlin.domain.dataProvider.local
 
 import com.example.saba.sampleKotlin.domain.database.RepoDatabase
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
-import com.example.saba.sampleKotlin.helper.Converter
+import com.example.saba.sampleKotlin.custom.helper.Converter
 import io.reactivex.Observable
 
 class LocalDataProviderImpl(private val repoDb: RepoDatabase): LocalDataProvider {

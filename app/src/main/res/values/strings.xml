@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sample_kotlin</string>
+    <string name="app_name">sample_mvi</string>
     <string name="tv_username_text">username</string>
     <string name="but_search_text">search</string>
     <string name="but_nav_screen_result_text">go to result screen</string>

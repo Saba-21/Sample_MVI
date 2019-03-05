@@ -2,7 +2,7 @@ package com.example.saba.sampleKotlin.app
 
 import com.example.saba.sampleKotlin.presentation.main.MainActivity
 import com.example.saba.sampleKotlin.presentation.main.modules.MainActivityModule
-import com.example.saba.sampleKotlin.mvi.scope.PerActivity
+import com.example.saba.sampleKotlin.base.mvi.scopes.PerActivity
 import com.example.saba.sampleKotlin.presentation.main.modules.FragmentBindingModule
 import com.example.saba.sampleKotlin.presentation.main.modules.NavigatorBindingModule
 import dagger.Module

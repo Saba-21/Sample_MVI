@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.example.saba.sampleKotlin.R.layout.fragment_adding
-import com.example.saba.sampleKotlin.adapter.RepoAdapter
+import com.example.saba.sampleKotlin.custom.adapter.RepoAdapter
+import com.example.saba.sampleKotlin.base.annotations.LayoutResourceId
 import com.example.saba.sampleKotlin.domain.model.apiModels.RepoModel
-import com.example.saba.sampleKotlin.mvi.anotations.LayoutResourceId
-import com.example.saba.sampleKotlin.mvi.fragment.BaseFragment
+import com.example.saba.sampleKotlin.base.mvi.fragments.BaseFragment
+import com.example.saba.sampleKotlin.custom.HIDE_LOADER_STATE
+import com.example.saba.sampleKotlin.custom.SHOW_ERROR_STATE
+import com.example.saba.sampleKotlin.custom.SHOW_LOADER_STATE
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -19,21 +22,7 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
     private val listAdapter = RepoAdapter()
     private val listItemClickListener = PublishSubject.create<RepoModel>()
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): AddingFragment = AddingFragment()
-    }
-
-    override fun reflectState(state: AddingViewState) {
-        when (state.state) {
-            ADDING_VIEW_INITIAL_STATE -> initialStateActions()
-            ADDING_VIEW_LOADING_STATE -> loadingStateActions()
-            ADDING_VIEW_SUCCESS_STATE -> successStateActions(state)
-            ADDING_VIEW_ERROR_STATE -> errorStateActions(state)
-        }
-    }
-
-    private fun initialStateActions() {
+    override fun renderView(view: View?, savedInstanceState: Bundle?) {
         rvGlobalRepos.layoutManager = LinearLayoutManager(context)
         rvGlobalRepos.adapter = listAdapter
         listAdapter.setClickListener {
@@ -41,32 +30,33 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
         }
     }
 
-    private fun loadingStateActions() {
-        startLoadingAnimation()
+    override fun reflectState(state: AddingViewState) {
+        when (state.state) {
+            SHOW_LOADER_STATE -> showLoader()
+            DRAW_REPO_LIST_STATE -> drawRepoList(state)
+            SHOW_ERROR_STATE -> showError(state)
+            HIDE_LOADER_STATE -> hideLoader()
+        }
     }
 
-    private fun successStateActions(viewState: AddingViewState) {
+    private fun drawRepoList(viewState: AddingViewState) {
         listAdapter.updateData(viewState.response!!)
-        stopLoadingAnimation()
     }
 
-    private fun errorStateActions(viewState: AddingViewState) {
+    private fun showError(viewState: AddingViewState) {
         tv_adding_error.visibility = View.VISIBLE
         tv_adding_error.text = viewState.exception
-        stopLoadingAnimation()
     }
 
-    private fun startLoadingAnimation() {
+    private fun showLoader() {
         animLoading.playAnimation()
         animLoading.visibility = View.VISIBLE
     }
 
-    private fun stopLoadingAnimation() {
+    private fun hideLoader() {
         animLoading.cancelAnimation()
         animLoading.visibility = View.GONE
     }
-
-    override fun renderView(view: View?, savedInstanceState: Bundle?) {}
 
     override fun onPresenterReady(presenter: AddingPresenter) {
         presenter.attach(this)
@@ -80,4 +70,11 @@ class AddingFragment : BaseFragment<AddingViewState, AddingPresenter>(), AddingV
 
     override fun onAddClickIntent():
             PublishSubject<RepoModel> = listItemClickListener
+
+    companion object {
+        const val ADDING_FRAGMENT_TAG = "ADDING_FRAGMENT_TAG"
+        @JvmStatic
+        fun newInstance(): AddingFragment = AddingFragment()
+    }
+
 }

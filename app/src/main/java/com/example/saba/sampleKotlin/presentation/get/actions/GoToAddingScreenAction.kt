@@ -1,6 +1,6 @@
 package com.example.saba.sampleKotlin.presentation.get.actions
 
-import com.example.saba.sampleKotlin.mvi.actions.NavigatorAction
+import com.example.saba.sampleKotlin.base.mvi.actions.NavigatorAction
 import com.example.saba.sampleKotlin.presentation.get.ResultNavigator
 
 class GoToAddingScreenAction(navigator: ResultNavigator):
