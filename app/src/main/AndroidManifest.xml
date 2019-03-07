@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.saba.sampleKotlin"
+    package="com.example.saba.sampleMVI"
     android:versionCode="1"
     android:versionName="1.0"
     tools:ignore="GradleOverrides">
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".app.App"
+        android:name="com.example.saba.sampleMVI.app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="donut">
         <activity
-            android:name="com.example.saba.sampleKotlin.presentation.main.MainActivity"
+            android:name="com.example.saba.sampleMVI.presentation.main.MainActivity"
             android:windowSoftInputMode="adjustPan"
             tools:targetApi="cupcake">
             <intent-filter>

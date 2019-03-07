@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.saba.sampleKotlin.presentation.add.AddingFragment">
+    tools:context="com.example.saba.sampleMVI.presentation.add.AddingFragment">
 
     <TextView
         android:id="@+id/tv_adding_error"
