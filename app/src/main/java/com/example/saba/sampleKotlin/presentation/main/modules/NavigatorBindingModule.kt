@@ -1,21 +1,26 @@
 package com.example.saba.sampleKotlin.presentation.main.modules
 
 import com.example.saba.sampleKotlin.base.mvi.scopes.PerActivity
-import com.example.saba.sampleKotlin.presentation.main.MainPresenter
 import com.example.saba.sampleKotlin.presentation.add.AddingNavigator
 import com.example.saba.sampleKotlin.presentation.get.ResultNavigator
-import dagger.Binds
+import com.example.saba.sampleKotlin.presentation.main.MainActivity
 import dagger.Module
+import dagger.Provides
 
 @Module
-abstract class NavigatorBindingModule {
+class NavigatorBindingModule {
 
-    @Binds
     @PerActivity
-    abstract fun bindAddingNavigator(presenter: MainPresenter): AddingNavigator
+    @Provides
+    fun bindAddingNavigator(mainActivity: MainActivity): AddingNavigator {
+        return mainActivity.getPresenter()
+    }
 
-    @Binds
+
     @PerActivity
-    abstract fun bindResultsNavigator(presenter: MainPresenter): ResultNavigator
+    @Provides
+    fun bindResultsNavigator(mainActivity: MainActivity): ResultNavigator {
+        return mainActivity.getPresenter()
+    }
 
 }

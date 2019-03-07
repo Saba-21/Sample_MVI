@@ -22,10 +22,6 @@ abstract class BaseActivity<V : Any, P : BasePresenter<V, out BaseView<V>>> :
 
     private var presenter: P? = null
     private var compositeDisposable: CompositeDisposable? = null
-    @Inject
-    lateinit var mDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = mDispatchingAndroidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +34,23 @@ abstract class BaseActivity<V : Any, P : BasePresenter<V, out BaseView<V>>> :
         AndroidInjection.inject(this)
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Inject
     fun setPresenter(lazy: Lazy<P>) {
-//        if (lastNonConfigurationInstance == null)
-//            presenter = lazy.get()
-//        else
-//            presenter = null
-        presenter = lazy.get()
+        presenter = if (lastNonConfigurationInstance == null)
+            lazy.get()
+        else
+            lastCustomNonConfigurationInstance as P
+
         onPresenterReady(presenter!!)
+    }
+
+    fun getPresenter(): P {
+        return presenter!!
+    }
+
+    override fun onRetainCustomNonConfigurationInstance(): Any {
+        return presenter!!
     }
 
     @Suppress("unused")
@@ -71,5 +76,10 @@ abstract class BaseActivity<V : Any, P : BasePresenter<V, out BaseView<V>>> :
     protected abstract fun onPresenterReady(presenter: P)
 
     protected abstract fun renderView(savedInstanceState: Bundle?)
+
+    @Inject
+    lateinit var mDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = mDispatchingAndroidInjector
 
 }

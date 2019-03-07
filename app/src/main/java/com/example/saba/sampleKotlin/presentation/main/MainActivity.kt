@@ -31,14 +31,19 @@ class MainActivity : BaseActivity<MainViewState, MainPresenter>(), MainView {
         supportFragmentManager
                 .beginTransaction()
                 .replace(frame_main, ResultFragment.newInstance(), RESULT_FRAGMENT_TAG)
+                .addToBackStack(null)
                 .commit()
     }
 
     private fun onAddingScreenNavigationState() {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(frame_main, AddingFragment.newInstance(), ADDING_FRAGMENT_TAG)
-                .commit()
+        val fragment = supportFragmentManager.findFragmentById(frame_main)
+        if (fragment == null)
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(frame_main, AddingFragment.newInstance(), ADDING_FRAGMENT_TAG)
+                    .commit()
+        else
+            onBackPressed()
     }
 
 }

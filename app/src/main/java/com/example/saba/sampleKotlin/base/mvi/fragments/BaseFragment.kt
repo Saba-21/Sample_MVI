@@ -56,6 +56,10 @@ abstract class BaseFragment<V : Any, P : BasePresenter<V, out BaseView<V>>> : Fr
         onPresenterReady(presenter!!)
     }
 
+    fun getPresenter(): P {
+        return presenter!!
+    }
+
     override fun onDestroyView() {
         presenter?.detach(false)
         if (compositeDisposable != null) {
